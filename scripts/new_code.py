@@ -35,6 +35,8 @@ struct ListNode
     ListNode(int x) : val(x), next(NULL) {}
 };
 
+/* Solution */
+const int MOD = 1000000007;
 
 
 int main()
@@ -61,6 +63,8 @@ def create_new_cpp(argv):
     new_file = os.path.join(problems_dir, new_cpp)
 
     add_template(new_file)
+
+    print "\nCreate new .cpp file: {filename}\n".format(filename=new_cpp)
 
 # Usage:
 # python new_code.py 1702. Maximum Binary String After Change
