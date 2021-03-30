@@ -27,6 +27,27 @@ public:
 	}
 };
 
+// class Solution {
+// public:
+//     int leastInterval(vector<char>& tasks, int n) {
+//         vector<int> count(26);
+//         for (char task : tasks) {
+//             count[task - 'A']++;
+//         }
+//         sort(count.begin(), count.end());
+        
+//         int max_intervals = count.back() - 1;
+//         int idle_slots = max_intervals * n;
+        
+//         for (int i = 24; i >= 0; i--) {
+//             if (count[i] == 0) break;
+            
+//             idle_slots -= min(count[i], max_intervals);
+//         }
+//         return idle_slots < 0 ? tasks.size() : tasks.size() + idle_slots;
+//     }
+// };
+
 int main() {
 	char array[] = {'A', 'A', 'A', 'B', 'B', 'B', 'C', 'C', 'C', 'E'};
 	vector<char> tasks(array, array + 10);

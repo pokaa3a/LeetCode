@@ -8,23 +8,46 @@ struct TreeNode{
 	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-class Solution{
+// class Solution{
+// public:
+// 	int maxPathSum(TreeNode* root){
+// 		if(!root) return 0;
+// 		int maxPath = INT_MIN;
+// 		maxPathSumHelper(root, maxPath);
+// 		return maxPath;
+// 	}
+
+// 	int maxPathSumHelper(TreeNode* root, int &maxPath){
+// 		if(!root) return 0;
+// 		int left = root->val + maxPathSumHelper(root->left, maxPath);
+// 		int right = root->val + maxPathSumHelper(root->right, maxPath);
+// 		maxPath = max( max(left, right), max(root->val, max(maxPath, left + right - root->val)));
+// 		return max(max(left, right), root->val);
+// 	}
+// };
+
+class Solution
+{
 public:
-	int maxPathSum(TreeNode* root){
-		if(!root) return 0;
-		int maxPath = INT_MIN;
-		maxPathSumHelper(root, maxPath);
-		return maxPath;
+	int maxPathSum(TreeNode* root)
+	{
+		if (!root) return 0;
+		int ans = INT_MIN;
+
+		helper(root, ans);
+		return ans;
 	}
 
-	int maxPathSumHelper(TreeNode* root, int &maxPath){
-		if(!root) return 0;
-		int left = root->val + maxPathSumHelper(root->left, maxPath);
-		int right = root->val + maxPathSumHelper(root->right, maxPath);
-		maxPath = max( max(left, right), max(root->val, max(maxPath, left + right - root->val)));
-		return max(max(left, right), root->val);
-	}
+	int helper(TreeNode* node, int& ans)
+	{
+		if (!node) return 0;
 
+		int left = helper(node->left, ans);
+		int right = helper(node->right, ans);
+		ans = max({ans, node->val + left + right, node->val + left, node->val + right, node->val});
+
+		return node->val + max({left, right, 0});
+	}
 };
 
 int main(){

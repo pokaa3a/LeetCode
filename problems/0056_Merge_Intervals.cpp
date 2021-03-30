@@ -1,36 +1,74 @@
-/**
- * Definition for an interval.
- * struct Interval {
- *     int start;
- *     int end;
- *     Interval() : start(0), end(0) {}
- *     Interval(int s, int e) : start(s), end(e) {}
- * };
- */
+#include <iostream>
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include <set>
+#include <unordered_set>
+#include <string>
+#include <queue>
+#include <stack>
+#include <sstream>
+#include <cmath>
+#include <numeric>
+using namespace std;
+
+struct TreeNode {
+	int val;
+	TreeNode* left;
+	TreeNode* right;
+	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+struct ListNode {
+	int val;
+	ListNode *next;
+	ListNode(int x) : val(x), next(NULL) {}
+};
+
+void traverse(TreeNode* root) {
+	if (!root) return;
+	cout << root->val << endl;
+	traverse(root->left);
+	traverse(root->right);
+}
+
+/* Solution */
+const int MOD = 1000000007;
 class Solution {
 public:
-    static bool compare(Interval iv1, Interval iv2){
-        return iv1.start<iv2.start;
-    }
+    vector<vector<int>> merge(vector<vector<int>>& intervals)
+    {
+        sort(intervals.begin(), intervals.end());
 
-    vector<Interval> merge(vector<Interval>& intervals) {
-        vector<Interval> res;
-        if(intervals.empty()) return res;
-        
-        sort(intervals.begin(), intervals.end(), compare);
-        
-        int start=intervals[0].start, end=intervals[0].end;
-        
-        for(int i=1; i<intervals.size(); i++){
-            if(intervals[i].start>end){
-                res.push_back(Interval(start,end));
-                start = intervals[i].start;
-                end = intervals[i].end;
-            } else{
-                end = end>intervals[i].end ? end : intervals[i].end;
+        vector<vector<int>> ans;
+        vector<int> cur = intervals[0];
+        for (auto next : intervals)
+        {
+            if (next[0] <= cur[1])
+            {
+                cur[1] = max(cur[1], next[1]);
+            }
+            else
+            {
+                ans.push_back(cur);
+                cur = next;
             }
         }
-        res.push_back(Interval(start,end));
-        return res;
+        ans.push_back(cur);
+
+        return ans;
     }
 };
+
+int main() {
+	/* Solution */
+	Solution sol;
+
+    vector<vector<int>> intervals = {{1,3}, {2,6}, {8,10}, {15,18}};
+
+    vector<vector<int>> ans = sol.merge(intervals);
+    for (auto x : ans)
+    {
+        cout << x[0] << "-" << x[1] << " ";
+    }
+}

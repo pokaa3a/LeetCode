@@ -39,26 +39,37 @@ void traverse(TreeNode* root) {
 const int MOD = 1000000007;
 class Solution {
 public:
-    ListNode* mergeKLists(vector<ListNode*>& lists) {
-        priority_queue<pair<int, ListNode*>, vector<pair<int, ListNode*>>, greater<pair<int, ListNode*>>> pq;
-        for (int i = 0; i < lists.size(); i++) {
-            if (lists[i])
-                pq.push(make_pair(lists[i]->val, lists[i]));
+    ListNode* mergeKLists(vector<ListNode*>& lists)
+    {
+        if (lists.empty()) return nullptr;
+        
+        auto comp = [](ListNode* a, ListNode* b) { return a->val > b->val; };
+        
+        priority_queue<ListNode*, vector<ListNode*>, decltype(comp)> pq(comp);
+        
+        for (auto root : lists)
+        {
+            if (!root) continue;
+            pq.push(root);
         }
         
         ListNode* dummy = new ListNode();
-        ListNode* cur = dummy; // dummy
-        while (!pq.empty()) {
-            ListNode* next = pq.top().second;
-            pq.pop();
+        ListNode* cur = dummy;
+        while (!pq.empty())
+        {
+            cur->next = pq.top();
+            cur = cur->next;
             
-            cur->next = next;
-            cur = next;
-            if (next->next) {
-                pq.push(make_pair(next->next->val, next->next));
+            if (pq.top()->next)
+            {
+                pq.push(pq.top()->next);
             }
+            pq.pop();
         }
-        return dummy->next;
+        
+        ListNode* output = dummy->next;
+        delete(dummy);
+        return output;
     }
 };
 

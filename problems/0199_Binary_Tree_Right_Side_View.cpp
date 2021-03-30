@@ -12,19 +12,21 @@ struct TreeNode {
 class Solution {
 public:
 	vector<int> rightSideView(TreeNode* root) {
-		vector<int> sides;
-		rightHelper(root, 1, sides);
-		return sides;
+		vector<int> ans;
+		helper(root, 1, ans);
+		return ans;
 	}
 
-	void rightHelper(TreeNode* root, int order, vector<int>& sides) {
-		if (root) {
-			if (sides.size() < order) {
-				sides.push_back(root->val);
-			}
-			rightHelper(root->right, order+1, sides);
-			rightHelper(root->left,  order+1, sides);
+	void helper(TreeNode* root, int level, vector<int>& ans)j
+	{
+		if (!root) return;
+
+		if (level > ans.size())
+		{
+			ans.push_back(root->val);
 		}
+		helper(root->right, level + 1, ans);
+		helper(root->left, level + 1, ans);
 	}
 };
 

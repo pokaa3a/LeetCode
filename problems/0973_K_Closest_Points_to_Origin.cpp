@@ -33,25 +33,29 @@ public:
 class Solution {
 public:
 	vector<vector<int> > kClosest(vector<vector<int> > &points, int K) {
-		int ref = pow(points[0][0], 2) + pow(points[0][1], 2);
-		vector<vector<int> > left, right, mid;
-		for (int i = 0; i < points.size(); ++i) {
-			int x = pow(points[i][0], 2) + pow(points[i][1], 2);
-			if (x < ref) {
-				left.push_back(points[i]);
-			} else if (x == ref) {
-				mid.push_back(points[i]);
-			} else {
-				right.push_back(points[i]);
-			}
+		int ref = points[0][0] * points[0][0] + points[0][1] * points[0][1];
+
+		vector<vector<int>> left, mid, right;
+		for (auto p : points)
+		{
+			int dist = p[0] * p[0] + p[1] * p[1];
+
+			if (dist < ref) left.push_back(p);
+			else if (dist == ref) mid.push_back(p);
+			else right.push_back(p);
 		}
 
-		if (K <= left.size()) {
-			return kClosest(left, K);
-		} else if (K > left.size() && K <= left.size() + mid.size()) {
-			left.insert(left.end(), mid.begin(), mid.begin() + K - left.size());
-		} else {
-			vector<vector<int> > remain = kClosest(right, K - left.size() - mid.size());
+		if (K <= left.size())
+		{
+			left = kClosest(left, K);
+		}
+		else if (K <= left.size() + mid.size())
+		{
+			left.insert(left.end(), mid.begin(), mid.begin() + (K - left.size())); 
+		}
+		else
+		{
+			vector<vector<int>> remain = kClosest(right, K - left.size() - mid.size());
 			left.insert(left.end(), mid.begin(), mid.end());
 			left.insert(left.end(), remain.begin(), remain.end());
 		}

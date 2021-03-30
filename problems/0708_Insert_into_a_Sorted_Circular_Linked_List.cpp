@@ -46,8 +46,8 @@ public:
         Node* cur = head;
         while (cur) {
             if ((cur->val <= insertVal && cur->next->val >= insertVal) ||
-                (cur->val > cur->next->val && cur->val > insertVal && cur->next->val > insertVal) ||
-                (cur->val > cur->next->val && cur->val < insertVal && cur->next->val < insertVal)) {
+                (cur->val > cur->next->val && cur->next->val > insertVal) ||
+                (cur->val > cur->next->val && interval > cur->val)) {
                 break;
             }
             cur = cur->next;

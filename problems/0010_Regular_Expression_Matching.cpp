@@ -5,25 +5,36 @@ using namespace std;
 
 class Solution {
 public:
-  bool isMatch(string s, string p) {
-    int s_len = s.size(), p_len = p.size();
-    vector<vector<bool>> dp(s_len + 1, vector<bool>(p_len + 1, false));
-    dp[0][0] = true;
-    
-    for (int i = 0; i <= s_len; i++) {
-      for (int j = 1; j <= p_len; j++) {
-        bool match = i > 0 && (s[i - 1] == p[j - 1] || p[j - 1] == '.');
+    bool isMatch(string s, string p)
+    {
+        int sLen = s.size(), pLen = p.size();
+        vector<vector<bool>> dp(sLen + 1, vector<bool>(pLen + 1, false));
+        // dp[i][j] = true if first i characters of s and first j characters of p match
+        dp[0][0] = true;
         
-        if (j + 1 <= p_len && p[j + 1 - 1] == '*') {
-          dp[i][j + 1] = dp[i][j - 1] || (match && (i == 0 ? dp[0][j + 1] : dp[i - 1][j + 1]));
-          j++;
-        } else {
-          dp[i][j] = match && dp[i - 1][j - 1];
+        
+        for (int i = 0; i <= sLen; ++i)
+        {
+            for (int j = 1; j <= pLen; ++j)
+            {
+                bool match = i > 0 && (s[i - 1] == p[j - 1] || p[j - 1] == '.');
+                
+                
+                if (j + 1 <= pLen && p[j] == '*')
+                {
+                    bool case1 = dp[i][j - 1];                  // X* -> zero element
+                    bool case2 = i > 0 && match && dp[i - 1][j + 1];     // X* -> multiple elements
+                    dp[i][j + 1] = case1 || case2;
+                    j++;
+                }
+                else
+                {
+                    dp[i][j] = i > 0 && dp[i - 1][j - 1] && match;
+                }
+            }
         }
-      }
+        return dp[sLen][pLen];
     }
-    return dp[s_len][p_len];
-  }
 };
 
 // class Solution {

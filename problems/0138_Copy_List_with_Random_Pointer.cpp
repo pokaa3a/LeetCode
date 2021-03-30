@@ -21,3 +21,25 @@ public:
         return node;
     }
 };
+
+// class Solution {
+// public:
+//   Node* copyRandomList(Node* head) {
+//     unordered_map<Node*, Node*> mp;
+    
+//     Node* cur = head;
+//     while (cur) {
+//       Node* new_node = new Node(cur->val);
+//       mp[cur] = new_node;
+//       cur = cur->next;
+//     }
+    
+//     cur = head;
+//     while (cur) {
+//       mp[cur]->next = mp[cur->next];
+//       mp[cur]->random = mp[cur->random];
+//       cur = cur->next;
+//     }
+//     return mp[head];
+//   }
+// };
