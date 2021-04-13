@@ -1,20 +1,41 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
 class Solution {
 public:
     int calculate(string s) {
-        stringstream stt("+"+s+"+");
-        int total=0, term=0, n;
-        char op;
-        while(stt>>op){
-            if(op=='+' || op=='-'){
-                total += term;
-                stt>>term;
-                term *= op=='+'? 1:-1;
-            } else {
-                stt>>n;
-                if(op=='*') term*=n;
-                else term/=n;
+        int ans = 0, cur = 0, num = 0;
+        char opt = '+';
+        
+        for (char c : s) {
+            if (isdigit(c)) {
+                num = num * 10 + (c - '0');
+            } else if (c == '+' || c == '-' || c == '*' || c == '/') {
+                if (opt == '+') {
+                    cur += num;
+                } else if (opt == '-') {
+                    cur -= num;
+                } else if (opt == '*') {
+                    cur *= num;
+                } else if (opt == '/') {
+                    cur /= num;
+                }
+                num = 0;
+                
+                if (c == '+' || c == '-') {
+                    ans += cur;
+                    cur = 0;
+                }
+                opt = c;
             }
         }
-        return total;
+        if (opt == '+') cur += num;
+        else if (opt == '-') cur -= num;
+        else if (opt == '*') cur *= num;
+        else if (opt == '/') cur /= num;
+        ans += cur;
+        
+        return ans;
     }
 };

@@ -4,51 +4,54 @@
 #include <algorithm>
 using namespace std;
 
-class Solution{
+class Solution {
 public:
-	vector<vector<int> > fourSum(vector<int>& nums, int target){
-		vector<vector<int> > res;
-
-		sort(nums.begin(), nums.end());
-		int n = nums.size();
-
-		if(n<4) return res;
-
-		for(int i=0; i<n-3; i++){
-			if(i>0 && nums[i]==nums[i-1]) continue;
-			if(nums[i]+nums[i+1]+nums[i+2]+nums[i+3] > target) break;
-			if(nums[i]+nums[n-1]+nums[n-2]+nums[n-3] < target) continue;
-			for(int j=i+1; j<n-2; j++){
-				if(j>i+1 && nums[j]==nums[j-1]) continue;
-				if(nums[i]+nums[j]+nums[j+1]+nums[j+2] > target) break;
-				if(nums[i]+nums[j]+nums[n-1]+nums[n-2] < target) continue;
-				twoSum(nums, target, i, j, res);
-			}
-		}
-		return res;
-	}
-
-	void twoSum(vector<int>& nums, int target, int i, int j, vector<vector<int> >& res){
-		int left = j+1, right = nums.size()-1;
-		while(left < right){
-			if(nums[i]+nums[j]+nums[left]+nums[right] < target){
-				do{left++;} while(left<right && nums[left]==nums[left-1]);
-			}
-			else if(nums[i]+nums[j]+nums[left]+nums[right] > target){
-				do{right--;} while(left<right && nums[right]==nums[right+1]);
-			}
-			else{
-				vector<int> vec;
-				vec.push_back(nums[i]);
-				vec.push_back(nums[j]);
-				vec.push_back(nums[left]);
-				vec.push_back(nums[right]);
-				res.push_back(vec);
-				do{left++;} while(left<right && nums[left]==nums[left-1]);
-				do{right--;} while(left<right && nums[right]==nums[right+1]);
-			}
-		}
-	}
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end());
+        
+        vector<vector<int>> ans;
+        int n = nums.size();
+        for (int i = 0; i < n - 3; ++i)
+        {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            if (nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target) break;
+            if (nums[i] + nums[n - 3] + nums[n - 2] + nums[n - 1] < target) continue;
+            
+            for (int j = i + 1; j < n - 2; ++j)
+            {
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+                if (nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target) break;
+                if (nums[i] + nums[j] + nums[n - 2] + nums[n - 1] < target) continue;
+                
+                // two sum
+                int lo = j + 1, hi = n - 1;
+                while (lo < hi)
+                {
+                    int sum = nums[i] + nums[j] + nums[lo] + nums[hi];
+                    
+                    if (sum < target)
+                    {
+                        lo++;
+                        while (lo < hi && nums[lo] == nums[lo - 1]) lo++;
+                    }
+                    else if (sum > target)
+                    {
+                        hi--;
+                        while (lo < hi && nums[hi] == nums[hi + 1]) hi--;
+                    }
+                    else    // sum == target
+                    {
+                        ans.push_back({nums[i], nums[j], nums[lo], nums[hi]});
+                        lo++;
+                        while (lo < hi && nums[lo] == nums[lo - 1]) lo++;
+                        hi--;
+                        while (lo < hi && nums[hi] == nums[hi + 1]) hi--;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
 };
 
 int main(){
